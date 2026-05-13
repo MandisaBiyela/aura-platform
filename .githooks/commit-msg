@@ -1,0 +1,23 @@
+#!/bin/sh
+# Drop Cursor co-author / product trailers so GitHub only credits human authors.
+# Git runs this from Git Bash on Windows when using Git for Windows.
+
+msg=${1:?}
+test -f "$msg" || exit 0
+
+tmp=${msg}.aura-strip.$$
+cleanup() {
+	rm -f "$tmp"
+}
+trap cleanup EXIT INT HUP TERM
+
+# Strip common Cursor attribution lines (exact and variant forms).
+if ! grep -vE \
+	'^Co-authored-by:[[:space:]]*(Cursor[[:space:]]*<cursoragent@cursor\.com>|.*cursoragent@cursor\.com)|^Made-with:[[:space:]]*Cursor' \
+	"$msg" >"$tmp"; then
+	exit 1
+fi
+
+mv "$tmp" "$msg" || exit 1
+trap - EXIT INT HUP TERM
+exit 0

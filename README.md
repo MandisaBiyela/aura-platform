@@ -107,6 +107,14 @@ git clone https://github.com/MandisaBiyela/aura-platform.git
 cd aura-platform
 ```
 
+**Git hooks (once per clone):** keeps GitHub contributors aligned with human authors only by removing Cursor co-author trailers from commit messages.
+
+```bash
+git config core.hooksPath .githooks
+```
+
+In **Cursor**, you can also turn off **Agents → Attribution → Commit attribution** (or set `commitAttribution` to `false` in the Cursor CLI config) so co-author lines are not injected in the first place. See [Cursor forum: co-author discussion](https://forum.cursor.com/t/co-author-added-without-consent-and-cant-be-turned-off/150096).
+
 ### 2. Set up the backend
 
 ```bash
