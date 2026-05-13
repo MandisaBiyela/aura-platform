@@ -103,7 +103,7 @@ Cloud Storage / Logs
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/aura-platform.git
+git clone https://github.com/MandisaBiyela/aura-platform.git
 cd aura-platform
 ```
 
