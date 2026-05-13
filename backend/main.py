@@ -1,12 +1,14 @@
 """Aura platform FastAPI application entry point."""
 
+from pathlib import Path
 from typing import TypedDict
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-load_dotenv()
+_ROOT = Path(__file__).resolve().parents[1]
+load_dotenv(_ROOT / ".env")
 
 app = FastAPI(title="Aura Platform")
 

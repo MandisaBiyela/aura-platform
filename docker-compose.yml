@@ -1,0 +1,25 @@
+# PostgreSQL for local development (matches .env.example DATABASE_URL).
+# Start: docker compose up -d
+# Stop:  docker compose down
+# Logs:  docker compose logs -f db
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: aura-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: aura_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - aura_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d aura_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  aura_pgdata:
