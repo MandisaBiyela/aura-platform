@@ -2,10 +2,11 @@
 
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, func
+from sqlalchemy import Boolean, DateTime, Enum as SQLEnum, ForeignKey, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.base import Base
+from backend.tickets.enums import TicketPriority, TicketStatus
 
 
 class User(Base):
@@ -45,12 +46,23 @@ class Ticket(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    status: Mapped[str] = mapped_column(String(64))
-    priority: Mapped[str] = mapped_column(String(32))
+    status: Mapped[TicketStatus] = mapped_column(
+        SQLEnum(TicketStatus, native_enum=False, length=64),
+        default=TicketStatus.OPEN,
+    )
+    priority: Mapped[TicketPriority] = mapped_column(
+        SQLEnum(TicketPriority, native_enum=False, length=32),
+        default=TicketPriority.MEDIUM,
+    )
     device_id: Mapped[int] = mapped_column(ForeignKey("devices.id"), index=True)
     created_by: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
     )
 
     device: Mapped["Device"] = relationship("Device", back_populates="tickets")
