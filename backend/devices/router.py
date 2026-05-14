@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 from backend.auth.deps import get_current_user
 from backend.database import get_db
 from backend.devices.schemas import DeviceCreate, DeviceResponse, DeviceUpdate
-from backend.models import Device, User
+from backend.models import Device, Ticket, User
+from backend.tickets.schemas import TicketResponse
 
 router = APIRouter(prefix="/devices", tags=["devices"])
 
@@ -50,6 +51,17 @@ def create_device(
     db.commit()
     db.refresh(device)
     return device
+
+
+@router.get("/{device_id}/tickets", response_model=list[TicketResponse])
+def list_device_tickets(
+    device_id: int,
+    db: Annotated[Session, Depends(get_db)],
+    _current_user: Annotated[User, Depends(get_current_user)],
+) -> list[Ticket]:
+    _active_device_or_404(db, device_id)
+    stmt = select(Ticket).where(Ticket.device_id == device_id).order_by(Ticket.id)
+    return list(db.scalars(stmt).all())
 
 
 @router.get("/{device_id}", response_model=DeviceResponse)
