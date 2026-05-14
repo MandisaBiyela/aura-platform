@@ -252,9 +252,9 @@ Commit message convention:
 ## Roadmap
 
 - [x] Project structure and GitHub setup
-- [ ] Auth service (register, login, JWT)
-- [ ] Device inventory CRUD
-- [ ] Ticket management system
+- [x] Auth service (register, login, JWT)
+- [x] Device inventory CRUD
+- [x] Ticket management system
 - [ ] React dashboard
 - [ ] AI ticket classifier (Phase 2)
 - [ ] Predictive maintenance model (Phase 3)
