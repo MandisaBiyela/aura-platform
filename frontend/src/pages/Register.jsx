@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+import AuraBrandLogo from '../components/AuraBrandLogo'
 import { login, register } from '../api/auth'
-import { setStoredToken } from '../api/client'
+import { setStoredToken, setStoredUserEmail } from '../api/client'
 import { getErrorMessage } from '../api/errors'
 
 export default function Register() {
@@ -24,6 +25,7 @@ export default function Register() {
       await register({ email, password })
       const { data } = await login({ email, password })
       setStoredToken(data.access_token)
+      setStoredUserEmail(email)
       navigate('/dashboard', { replace: true })
     } catch (err) {
       setError(getErrorMessage(err))
@@ -33,13 +35,20 @@ export default function Register() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-semibold text-slate-900">Create account</h1>
-        <p className="mt-1 text-sm text-slate-600">Password must be at least 8 characters.</p>
+    <div className="flex min-h-screen items-center justify-center px-4" style={{ background: 'var(--bg)' }}>
+      <div className="panel w-full max-w-md p-8 shadow-lg shadow-black/20">
+        <div className="mb-6 flex justify-center">
+          <AuraBrandLogo className="h-auto w-full max-h-14 max-w-[260px] object-contain" alt="AURA" />
+        </div>
+        <h1 className="text-2xl font-semibold" style={{ color: 'var(--text)' }}>
+          Create account
+        </h1>
+        <p className="mt-1 text-sm" style={{ color: 'var(--text2)' }}>
+          Password must be at least 8 characters.
+        </p>
         <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="reg-email" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="reg-email" className="block text-sm font-medium" style={{ color: 'var(--text2)' }}>
               Email
             </label>
             <input
@@ -50,11 +59,11 @@ export default function Register() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm outline-none ring-violet-500 focus:border-violet-500 focus:ring-1"
+              className="input-field"
             />
           </div>
           <div>
-            <label htmlFor="reg-password" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="reg-password" className="block text-sm font-medium" style={{ color: 'var(--text2)' }}>
               Password
             </label>
             <input
@@ -66,25 +75,34 @@ export default function Register() {
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm outline-none ring-violet-500 focus:border-violet-500 focus:ring-1"
+              className="input-field"
             />
           </div>
           {error ? (
-            <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+            <p
+              className="rounded-md border px-3 py-2 text-sm"
+              style={{
+                borderColor: 'rgba(248, 113, 113, 0.35)',
+                background: 'rgba(248, 113, 113, 0.1)',
+                color: 'var(--red)',
+              }}
+              role="alert"
+            >
               {error}
             </p>
           ) : null}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className={`btn-primary-solid w-full gap-2 ${loading ? 'btn-primary-loading' : ''}`}
           >
-            {loading ? 'Creating account…' : 'Register'}
+            {loading ? <span className="submit-btn-spinner" aria-hidden /> : null}
+            <span>{loading ? 'Creating account…' : 'Register'}</span>
           </button>
         </form>
-        <p className="mt-6 text-center text-sm text-slate-600">
+        <p className="mt-6 text-center text-sm" style={{ color: 'var(--text2)' }}>
           Already registered?{' '}
-          <Link className="font-medium text-violet-600 hover:text-violet-500" to="/login">
+          <Link className="font-medium hover:underline" style={{ color: 'var(--purple)' }} to="/login">
             Sign in
           </Link>
         </p>

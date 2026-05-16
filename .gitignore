@@ -1,7 +1,10 @@
 .env
+backend/.env
 .venv/
 .venv*/
 backend/.venv/
+ticket-ai/.venv/
+ticket-ai/models/*.joblib
 __pycache__/
 *.py[cod]
 .pytest_cache/

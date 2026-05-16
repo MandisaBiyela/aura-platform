@@ -27,8 +27,11 @@ def list_devices(
     db: Annotated[Session, Depends(get_db)],
     _current_user: Annotated[User, Depends(get_current_user)],
     status_filter: Annotated[str | None, Query(alias="status")] = None,
+    include_inactive: Annotated[bool, Query(alias="include_inactive")] = False,
 ) -> list[Device]:
-    stmt = select(Device).where(Device.is_active.is_(True))
+    stmt = select(Device)
+    if not include_inactive:
+        stmt = stmt.where(Device.is_active.is_(True))
     if status_filter is not None:
         stmt = stmt.where(Device.status == status_filter)
     return list(db.scalars(stmt.order_by(Device.id)).all())

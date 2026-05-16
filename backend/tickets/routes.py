@@ -10,7 +10,19 @@ from backend.auth.deps import get_current_user
 from backend.database import get_db
 from backend.models import Device, Ticket, User
 from backend.tickets.enums import TicketPriority, TicketStatus
-from backend.tickets.schemas import TicketCreate, TicketResponse, TicketStatusPatch
+from backend.tickets.schemas import (
+    TicketClassifyRequest,
+    TicketClassifyResponse,
+    TicketCreate,
+    TicketResponse,
+    TicketStatusPatch,
+)
+from backend.tickets.service import (
+    classify_and_update_ticket,
+    create_ticket_record,
+    fetch_classification,
+    ticket_classification_text,
+)
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
 
@@ -38,13 +50,14 @@ def list_tickets(
 
 
 @router.post("", response_model=TicketResponse, status_code=status.HTTP_201_CREATED)
-def create_ticket(
+async def create_ticket(
     body: TicketCreate,
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> Ticket:
     _active_device_or_404(db, body.device_id)
-    ticket = Ticket(
+    ticket = create_ticket_record(
+        db,
         title=body.title,
         description=body.description,
         status=body.status,
@@ -52,10 +65,33 @@ def create_ticket(
         device_id=body.device_id,
         created_by=current_user.id,
     )
-    db.add(ticket)
-    db.commit()
-    db.refresh(ticket)
-    return ticket
+    return await classify_and_update_ticket(
+        db, ticket, ticket_classification_text(ticket)
+    )
+
+
+@router.post("/classify", response_model=TicketClassifyResponse)
+async def classify_ticket_text(
+    body: TicketClassifyRequest,
+    _current_user: Annotated[User, Depends(get_current_user)],
+) -> TicketClassifyResponse:
+    """Preview classification for arbitrary ticket text (Classifier UI)."""
+    text = body.text.strip()
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Text is required",
+        )
+    result = await fetch_classification(text)
+    if result is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "Ticket classifier service is unavailable. "
+                "Start aura-ticket-ai on port 8001 and set AI_SERVICE_URL in .env."
+            ),
+        )
+    return TicketClassifyResponse(**result)
 
 
 @router.get("/{ticket_id}", response_model=TicketResponse)

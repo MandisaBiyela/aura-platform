@@ -1,0 +1,61 @@
+text,label
+Laptop will not power on after spill on keyboard yesterday,hardware_failure
+Desktop makes loud clicking noise and blue screens during boot,hardware_failure
+Monitor displays no signal HDMI and VGA both tried,hardware_failure
+Keyboard several keys stopped working after drop,hardware_failure
+Printer shows paper jam but tray is empty,hardware_failure
+External hard drive not detected USB port works with mouse,hardware_failure
+Laptop battery drains in under 30 minutes brand new last month,hardware_failure
+Projector lamp indicator flashing red will not turn on,hardware_failure
+Mouse cursor jumps randomly replaced batteries same issue,hardware_failure
+Server room UPS beeping continuously after power outage,hardware_failure
+Docking station USB ports dead laptop charges only,hardware_failure
+RAM upgrade PC beeps three times and will not POST,hardware_failure
+Outlook crashes every time I open an attachment,software_bug
+Excel freezes when sorting large spreadsheet over 5000 rows,software_bug
+CRM login page returns 500 internal server error,software_bug
+Antivirus scan hangs at 99 percent for hours,software_bug
+PDF export from accounting app produces blank pages,software_bug
+Teams desktop app stuck on loading spinner after update,software_bug
+Database backup job failed with corrupted index error,software_bug
+Mobile app logs users out immediately after successful login,software_bug
+SharePoint sync conflict deleted my edited document version,software_bug
+Java plugin error blocks payroll portal in browser,software_bug
+Scheduled report emails stopped sending since patch Tuesday,software_bug
+API integration returns null pointer exception on invoice sync,software_bug
+Cannot connect to office Wi-Fi password rejected on all devices,network_issue
+VPN connects but no access to internal file shares,network_issue
+Internet drops every 10 minutes only on floor 3,network_issue
+DNS resolution failing for internal apps works on guest network,network_issue
+High latency and packet loss to cloud ERP since morning,network_issue
+Firewall blocking legitimate traffic to new SaaS vendor,network_issue
+Ethernet link light orange 100Mbps instead of gigabit,network_issue
+Remote desktop disconnects with error 0x204 after 5 minutes,network_issue
+VoIP calls choppy and one-way audio in conference room,network_issue
+Proxy authentication loop when accessing GitHub,network_issue
+Site-to-site tunnel down between HQ and warehouse,network_issue
+Certificate expired warning on intranet portal users blocked,network_issue
+I deleted important emails from trash need them back,user_error
+Locked out of account typed wrong password too many times,user_error
+Accidentally formatted USB drive with project files,user_error
+Saved document to desktop cannot find it anywhere,user_error
+Changed system language cannot read menus how to revert,user_error
+Disabled network adapter while troubleshooting now offline,user_error
+Shared confidential file publicly on link need revoke,user_error
+Installed unauthorized software now PC very slow,user_error
+Plugged charger into Ethernet port by mistake,user_error
+Printed 200 copies instead of 2 wrong quantity in dialog,user_error
+Granted admin rights to intern by mistake need rollback,user_error
+Set laptop screen brightness to zero black screen help,user_error
+Server disk space critical logs filling root partition,maintenance_required
+SSL certificates expire in 7 days need renewal plan,maintenance_required
+Windows updates pending reboot for 45 servers in cluster,maintenance_required
+Database index rebuild recommended after migration weekend,maintenance_required
+Backup retention policy exceeded storage quota cleanup needed,maintenance_required
+Firmware update available for network switches security advisory,maintenance_required
+Annual HVAC filter replacement ticket for server room,maintenance_required
+Printer toner low on all floors bulk order request,maintenance_required
+Rotate service account passwords per compliance audit Q2,maintenance_required
+Decommission legacy file server migrate shares by month end,maintenance_required
+Schedule downtime for core switch firmware patch Sunday 2am,maintenance_required
+Review and archive tickets older than 24 months in helpdesk,maintenance_required
